@@ -1,0 +1,145 @@
+#-*-coding:utf-8-*-
+# !/usr/bin/env python
+import sys
+import tkMessageBox
+from Tkinter import *
+# from PIL import Image
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+
+
+
+
+def calculate():
+    global max_hang
+    global max_lie
+    list = [[0 for i in range(100)] for i in range(100)]
+    huogui_chang = float(entry1.get())
+    huogui_kuan = float(entry2.get())
+    huogui_gao = float(entry3.get())
+    huowu_chang = float(entry4.get())
+    huowu_kuan = float(entry5.get())
+    huowu_gao = float(entry6.get())
+
+
+    count_chang=int(huogui_chang/huowu_chang)
+    count_kuan=int(huogui_chang/huowu_kuan)
+    count_gao=int(huogui_gao/huowu_gao)
+    yushu_chang=float(huogui_chang%huowu_chang)
+    yushu_kuan = float(huogui_kuan % huowu_kuan)
+    yushu_gao = float(huogui_gao % huowu_gao)
+    max_zhi=0
+    for i in range(0,count_chang+1):
+        j = 0
+        for j in range(0,count_kuan+1):
+
+            list[i][j]=(huowu_chang*i+huowu_kuan*j)
+
+            if list[i][j]<=huogui_chang:
+                # print max_zhi
+
+                if list[i][j]>=max_zhi:
+                    max_zhi=list[i][j]
+
+                    max_hang=i
+                    max_lie=j#取出最终的最优结果组合
+
+    count_hang = int(huogui_kuan / huowu_kuan)
+    count_lie = int(huogui_kuan / huowu_chang)
+    list = [0 for i in range(10)]
+    if huowu_chang<=yushu_gao:
+        list[0] = (max_hang * count_hang + max_lie * count_lie) * count_gao+int(huogui_chang/huowu_gao)*int(huogui_kuan/huowu_kuan)
+        list[1]=(max_hang * count_hang + max_lie * count_lie) * count_gao+int(huogui_chang/huowu_kuan)*int(huogui_kuan/huowu_gao)
+        str1=u'长度小于高度，最高层平放'
+
+
+    elif huowu_kuan<=yushu_gao:
+        list[2] = (max_hang * count_hang + max_lie * count_lie) * count_gao+int(huogui_chang/huowu_gao)*int(huogui_kuan/huowu_chang)
+        list[3] = (max_hang * count_hang + max_lie * count_lie) * count_gao+int(huogui_chang / huowu_chang)*int(huogui_kuan / huowu_gao)
+        str1 = u'宽度小于高度，最高层侧放'
+
+
+    else:
+        list[4]=(max_hang * count_hang + max_lie * count_lie) * count_gao
+        str1 = u'最高层立放'
+    count_zong=max(list)
+
+    entry7.delete(0,END)
+    entry8.delete(0,END)
+    entry9.delete(0,END)
+    entry10.delete(0,END)
+    entry7.insert(END,max_hang)
+    entry8.insert(END,max_lie)
+    entry9.insert(END,count_zong)
+    entry10.insert(END,str1)
+
+
+
+
+
+
+
+root=Tk()
+
+root.title('献给女王大人的货柜计算程序')
+root.geometry('700x600')
+root.geometry('+700+200')
+label1=Label(root,text='货柜长:',font=('微软雅黑',20))
+label1.grid(row=1,column=2)
+entry1=Entry(root,font=('微软雅黑',20),)
+entry1.grid(row=1 ,column=3)
+
+label2=Label(root,text='货柜宽:',font=('微软雅黑',20))
+label2.grid(row=2,column=2)
+entry2=Entry(root,font=('微软雅黑',20),)
+entry2.grid(row=2 ,column=3)
+
+label3=Label(root,text='货柜高:',font=('微软雅黑',20))
+label3.grid(row=3,column=2)
+entry3=Entry(root,font=('微软雅黑',20),)
+entry3.grid(row=3 ,column=3)
+
+label4=Label(root,text='货物长:',font=('微软雅黑',20))
+label4.grid(row=4,column=2)
+entry4=Entry(root,font=('微软雅黑',20),)
+entry4.grid(row=4 ,column=3)
+
+label5=Label(root,text='货物宽:',font=('微软雅黑',20))
+label5.grid(row=5,column=2)
+entry5=Entry(root,font=('微软雅黑',20),)
+entry5.grid(row=5 ,column=3)
+
+label6=Label(root,text='货物高:',font=('微软雅黑',20))
+label6.grid(row=6,column=2)
+entry6=Entry(root,font=('微软雅黑',20),)
+entry6.grid(row=6 ,column=3)
+
+# label4=Label(root,text='结果:',font=('微软雅黑',20))
+# label4.grid(row=4,column=2)
+
+button1=Button(root,text='计算',font=('微软雅黑',20),command=calculate,)
+button1.grid(row=8,column=3)
+
+label7=Label(root,text='平放个数:',font=('微软雅黑',20))
+label7.grid(row=9,column=2)
+entry7=Entry(root,font=('微软雅黑',20),)
+entry7.grid(row=9 ,column=3)
+
+label8=Label(root,text='侧放个数:',font=('微软雅黑',20))
+label8.grid(row=10,column=2)
+entry8=Entry(root,font=('微软雅黑',20),)
+entry8.grid(row=10 ,column=3)
+
+label9=Label(root,text='总个数:',font=('微软雅黑',20))
+label9.grid(row=11,column=2)
+entry9=Entry(root,font=('微软雅黑',20),)
+entry9.grid(row=11 ,column=3)
+
+entry10=Entry(root,font=('微软雅黑',20),)
+entry10.grid(row=12 ,column=3)
+
+
+
+
+root.mainloop()
